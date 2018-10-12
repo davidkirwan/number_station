@@ -18,54 +18,32 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 =end
+require "securerandom"
+require "json"
 
 module NumberStation
+  def self.make_otp(pad_path, length, num_pads)
+    path = pad_path || Dir.pwd
+    len = length.to_i || 250
+    num = num_pads.to_i || 5
 
-  ALPHABET ={
-    '0' => "zero",
-    '1' => "one",
-    '2' => "two",
-    '3' => "three",
-    '4' => "four",
-    '5' => "five",
-    '6' => "six",
-    '7' => "seven",
-    '8' => "eight",
-    '9' => "nine",
-    'a' => "alpha",
-    'b' => "bravo",
-    'c' => "charlie",
-    'd' => "delta",
-    'e' => "echo",
-    'f' => "foxtrot",
-    'g' => "gamma",
-    'h' => "hotel",
-    'i' => "india",
-    'j' => "juliette",
-    'k' => "kilo",
-    'l' => "lima",
-    'm' => "mike",
-    'n' => "november",
-    'o' => "oscar",
-    'p' => "pappa",
-    'q' => "quebec",
-    'r' => "romeo",
-    's' => "sierra",
-    't' => "tango",
-    'u' => "uniform",
-    'v' => "victor",
-    'w' => "whiskey",
-    'x' => "xray",
-    'y' => "yankee",
-    'z' => "zulu"
-  }
+    NumberStation.log.debug "make_otp"
+    pads = {}
+    id = rand(0..99999).to_s.rjust(5, "0")
+    file_name = File.join(path, "one_time_pad_#{id}.json")
+    NumberStation.log.debug "file_name: #{file_name}"
 
-  def self.lookup(c)
-    begin
-      return NumberStation::ALPHABET[c] + ' ' || ' '
-    rescue Exception => e
-      return ' '
+    0.upto(num - 1) {|i| pads[i] = SecureRandom.hex(len)}
+    one_time_pads = {
+      :id=> id,
+      :pads=> pads
+    }
+
+    unless File.file?(file_name)
+      f = File.open(file_name, "w")
+      f.write(one_time_pads.to_json)
+      f.close
     end
-  end
 
+  end
 end
