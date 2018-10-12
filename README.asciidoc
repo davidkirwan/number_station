@@ -1,0 +1,10 @@
+== number_station ==
+This gem (WIP) contains a number of utilities to aid in the running of a number station.
+
+=== Contributing ===
+X
+
+=== Licence ===
+number_station is distributed under the GPL 3.0 licence. For more information see the _COPYING_
+file.
+
