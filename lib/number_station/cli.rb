@@ -26,15 +26,15 @@ module NumberStation
       config_location = File.join(File.dirname(__FILE__), "../../config/conf.json")
 
       if options[:path]
-	path = options[:path]
-	#write config to path
-	puts "Copying sample config to #{path}"
-	FileUtils.cp(config_location, path)
+        path = options[:path]
+        #write config to path
+        puts "Copying sample config to #{path}"
+        FileUtils.cp(config_location, path)
       else
-	#write config to local directory the binary was called from
-	path = Dir.pwd
-	puts "Copying sample config to #{path}"
-	FileUtils.cp(config_location, path)
+        #write config to local directory the binary was called from
+        path = Dir.pwd
+        puts "Copying sample config to #{path}"
+        FileUtils.cp(config_location, path)
       end
     end
 

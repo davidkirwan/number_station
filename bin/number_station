@@ -4,14 +4,3 @@ require "number_station"
 
 # Start the CLI
 NumberStation::CLI.start(ARGV)
-
-message, intro, body, outro = "", "", "", ""
-
-intro = NumberStation.read_message("resources/intro_message.txt")
-body = NumberStation.read_message("resources/body_message.txt")
-outro = NumberStation.read_message("resources/outro_message.txt")
-message = intro + body + outro
-
-pastel = Pastel.new
-puts pastel.red(message)
-#run(message)
