@@ -2,7 +2,8 @@
 This gem (WIP) contains a number of utilities to aid in the running of a number station.
 
 === Contributing ===
-X
+Contributions are welcome, please fork the repo, create a branch, add your code, and make a PR
+against master on this repo.
 
 === Licence ===
 number_station is distributed under the GPL 3.0 licence. For more information see the _COPYING_

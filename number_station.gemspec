@@ -1,3 +1,23 @@
+=begin
+ Ruby Number Station
+ Author: David Kirwan https://gitub.com/davidkirwan
+ Licence: GPL 3.0
+ NumberStation is a collection of utilities to aid in the running of a number station
+    Copyright (C) 2018  David Kirwan
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+=end
 
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
@@ -11,8 +31,8 @@ Gem::Specification.new do |spec|
   spec.email         = ["davidkirwanirl@gmail.com"]
   spec.license       = "GPL 3.0"
 
-  spec.summary       = "Run your own number station!"
-  spec.description   = "A collection of utilities to aid in running your own number station!"
+  spec.summary       = "(WIP) Run your own number station!"
+  spec.description   = "(WIP) A collection of utilities to aid in running your own number station!"
   spec.homepage      = "https://rubygems.org/gems/number_station"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'

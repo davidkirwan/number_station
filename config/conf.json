@@ -1,9 +1,15 @@
 {
+  "logging":{
+    "level":0
+  },
   "server":{
     "host":"localhost",
     "port":8080
   },
   "resources":{
-    "path":"resources"
+    "path":"resources",
+    "intro":"intro.txt",
+    "message":"message.txt",
+    "outro":"outro.txt"
   } 
 }
