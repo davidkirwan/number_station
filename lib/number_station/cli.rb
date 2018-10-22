@@ -109,7 +109,7 @@ module NumberStation
       --num NUM\n
       --length LENGTH
 
-    If no parameters are passed it will generate a single one time pad in the current 
+    If no parameters are passed it will generate 5 one time pads in the current 
     directory of size 250 characters.
     MAKE_ONE_TIME_PAD_LONG_DESC
     option :length, :type => :numeric

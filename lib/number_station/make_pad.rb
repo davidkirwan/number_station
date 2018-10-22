@@ -22,6 +22,7 @@ require "securerandom"
 require "json"
 
 module NumberStation
+  
   def self.make_otp(pad_path, length, num_pads)
     path = pad_path || Dir.pwd
     len = length.to_i || 250
@@ -43,7 +44,9 @@ module NumberStation
       f = File.open(file_name, "w")
       f.write(one_time_pads.to_json)
       f.close
+    else
+      raise Exception.new("Exception #{file_name} already exists")
     end
-
   end
+
 end
