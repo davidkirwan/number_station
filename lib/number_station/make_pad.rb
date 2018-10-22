@@ -25,8 +25,8 @@ module NumberStation
   
   def self.make_otp(pad_path, length, num_pads)
     path = pad_path || Dir.pwd
-    len = length.to_i || 250
-    num = num_pads.to_i || 5
+    len = length || 250
+    num = num_pads || 5
 
     NumberStation.log.debug "make_otp"
     pads = {}
@@ -34,7 +34,7 @@ module NumberStation
     file_name = File.join(path, "one_time_pad_#{id}.json")
     NumberStation.log.debug "file_name: #{file_name}"
 
-    0.upto(num - 1) {|i| pads[i] = SecureRandom.hex(len)}
+    0.upto(num.to_i - 1) {|i| pads[i] = SecureRandom.hex(len.to_i)}
     one_time_pads = {
       :id=> id,
       :pads=> pads

@@ -65,7 +65,8 @@ module NumberStation
       convert_message takes a parameter which should point to a text file containing a message.
       Optional parameters:\n
         --intro [INTRO] should be a text file containing intro message.\n
-        --outro [OUTRO] should be a text file containing the outro message.
+        --outro [OUTRO] should be a text file containing the outro message.\n
+        --mp3 [MP3] output message as an mp3 file.
      
       Final message will be created from intro + message + outro
     CONVERT_MESSAGE_LONG_DESC
