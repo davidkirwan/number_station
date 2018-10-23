@@ -161,7 +161,7 @@ module NumberStation
 
 
     # decrypt message with a pad
-    desc "encrypt_message [MESSAGE --numpad NUMPAD --padpath PADPATH]", "Decrypt a message using the key: NUMPAD in one time pad PADPATH"
+    desc "decrypt_message [MESSAGE --numpad NUMPAD --padpath PADPATH]", "Decrypt a message using the key: NUMPAD in one time pad PADPATH"
     long_desc <<-DECRYPT_MESSAGE_LONG_DESC
     Encrypt a message using key NUMPAD in one-time-pad PADPATH
     Parameters:\n
