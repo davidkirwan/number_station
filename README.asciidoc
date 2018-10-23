@@ -1,6 +1,8 @@
 == number_station ==
 This gem (WIP) contains a number of utilities to aid in the running of a number station.
 
+image:https://badge.fury.io/rb/number_station.svg["Gem Version", link="https://badge.fury.io/rb/number_station"]
+
 === Contributing ===
 Contributions are welcome, please fork the repo, create a branch, add your code, and make a PR
 against master on this repo.
