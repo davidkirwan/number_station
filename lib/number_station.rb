@@ -21,10 +21,10 @@
 require 'pastel'
 require 'json'
 require 'logger'
-require 'number_station/alphabet'
 require 'number_station/cli'
 require 'number_station/config_reader'
-require 'number_station/make_pad'
+require 'number_station/make_onetime_pad'
+require 'number_station/phonetic_conversion'
 require 'number_station/version'
 
 
@@ -62,69 +62,6 @@ module NumberStation
 
   def self.data()
     return @data
-  end
-
-  def self.word_template(word)
-    return "<prosody pitch=\"#{randomsign + rand(0..200).to_s}\">#{word}</prosody>"
-  end
-
-
-  def self.randomsign()
-    rand(0..1) == 0 ? "-" : "+"
-  end
-
-
-  def self.generate_sentence(message)
-    sentence = ""
-    message.split(" ").each do |i|
-      sentence += word_template(i)
-    end
-
-    sentence_template = "<speak version=\"1.0\" xmlns=\"\" xmlns:xsi=\"\" xsi:schemaLocation=\"\" xml:lang=\"\"><voice gender=\"female\">#{sentence}</voice></speak>"
-    return sentence_template
-  end
-
-
-  def self.write_template_file(filename, sentence)
-    f = File.open(filename, "w")
-    f.write(sentence)
-    f.close
-  end
-
-
-  def self.call_espeak(input_file_path, output_file_path)
-    cmd = "espeak -ven+f3 -m -p 60 -s 180 -f #{input_file_path} --stdout | ffmpeg -i - -ar 44100 -ac 2 -ab 192k -f mp3 #{output_file_path}"
-
-    unless NumberStation.command?('espeak') || NumberStation.command?('ffmpeg')
-      NumberStation.log.error "number_station requires the espeak and ffmpeg utilities are installed in order to output an mp3 file."
-    else
-      `#{cmd}`
-    end
-  end
-
-
-  def self.run(message, output_file_path)
-    filename = "/tmp/GLaDOS_tmp.xml"
-    sentence = NumberStation.generate_sentence(message)
-    NumberStation.write_template_file(filename, sentence)
-    NumberStation.call_espeak(filename, output_file_path)
-  end
-
-
-  def self.read_message(file_name)
-    message = ''
-
-    f = File.open(file_name)
-    raw_message = f.readlines()
-    f.close()
-
-    raw_message.each do |i|
-      # puts i
-      i.gsub!(/\n/, "").strip.each_char do |c|
-        message += NumberStation.lookup(c)
-      end
-    end
-    return message + "\n"
   end
 
 end

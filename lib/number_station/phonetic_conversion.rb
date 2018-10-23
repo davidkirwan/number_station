@@ -60,12 +60,74 @@ module NumberStation
     'z' => "zulu"
   }
 
-  def self.lookup(c)
+
+  def self.lookup_phonetic(c)
     begin
       return NumberStation::ALPHABET[c] + ' ' || ' '
     rescue Exception => e
       return ' '
     end
   end
+
+
+  def self.espeak_word_template(word)
+    return "<prosody pitch=\"#{randomsign() + rand(0..200).to_s}\">#{word}</prosody>"
+  end
+
+
+  def self.randomsign()
+    return rand(0..1) == 0 ? "-" : "+"
+  end
+
+
+  def self.generate_sentence(message)
+    sentence = ""
+    message.split(" ").each {|i| sentence += espeak_word_template(i)}
+    return "<speak version=\"1.0\" xmlns=\"\" xmlns:xsi=\"\" xsi:schemaLocation=\"\" xml:lang=\"\"><voice gender=\"female\">#{sentence}</voice></speak>"
+  end
+
+
+  def self.write_espeak_template_file(filename, sentence)
+    f = File.open(filename, "w")
+    f.write(sentence)
+    f.close
+  end
+
+
+  def self.call_espeak(input_file_path, output_file_path)
+    cmd = "espeak -ven+f3 -m -p 60 -s 180 -f #{input_file_path} --stdout | ffmpeg -i - -ar 44100 -ac 2 -ab 192k -f mp3 #{output_file_path}"
+
+    unless NumberStation.command?('espeak') || NumberStation.command?('ffmpeg')
+      NumberStation.log.error "number_station requires the espeak and ffmpeg utilities are installed in order to output an mp3 file."
+    else
+      `#{cmd}`
+    end
+  end
+
+
+  def self.write_mp3(message, output_file_path)
+    filename = NumberStation.data["resources"]["espeak_sentence_template"]
+    sentence = NumberStation.generate_sentence(message)
+    NumberStation.write_espeak_template_file(filename, sentence)
+    NumberStation.call_espeak(filename, output_file_path)
+  end
+
+
+  def self.to_phonetic(file_name)
+    message = ''
+
+    f = File.open(file_name)
+    raw_message = f.readlines()
+    f.close()
+
+    raw_message.each do |i|
+      # puts i
+      i.gsub!(/\n/, "").strip.each_char do |c|
+        message += NumberStation.lookup_phonetic(c)
+      end
+    end
+    return message + "\n"
+  end
+
 
 end

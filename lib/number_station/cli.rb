@@ -84,17 +84,17 @@ module NumberStation
       NumberStation.log.debug "intro_path: #{intro_path}" if options[:intro]
       NumberStation.log.debug "message_path: #{message_path}"
       NumberStation.log.debug "outro_path: #{outro_path}" if options[:outro]
-      NumberStation.log.debug "mp3_output: #{mp3_output}" if options[:mp3]
+      NumberStation.log.debug "mp3_path: #{mp3_path}" if options[:mp3]
 
       output = ""
-      output += NumberStation.read_message(intro_path) if options[:intro]
-      output += NumberStation.read_message(message_path)
-      output += NumberStation.read_message(outro_path) if options[:outro]
+      output += NumberStation.to_phonetic(intro_path) if options[:intro]
+      output += NumberStation.to_phonetic(message_path)
+      output += NumberStation.to_phonetic(outro_path) if options[:outro]
       NumberStation.log.info "output: #{output}"
 
       if options[:mp3]
         NumberStation.log.debug "Generating mp3 output: #{mp3_path}"
-        NumberStation.run(output, mp3_path)
+        NumberStation.write_mp3(output, mp3_path)
       end
       return output
     end
@@ -118,7 +118,7 @@ module NumberStation
     def make_one_time_pad()
       NumberStation::ConfigReader.read_config()
       NumberStation.log.debug "make_one_time_pad"
-      
+
       length = options[:length]
       num_pads = options[:num_pads]
       path = options[:path]
