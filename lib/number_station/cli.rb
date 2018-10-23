@@ -65,6 +65,7 @@ module NumberStation
     long_desc <<-CONVERT_MESSAGE_LONG_DESC
       convert_message takes a parameter which should point to a text file containing a message.
       Optional parameters:\n
+        MESSAGE\n
         --intro [INTRO] should be a text file containing intro message.\n
         --outro [OUTRO] should be a text file containing the outro message.\n
         --mp3 [MP3] output message as an mp3 file.
@@ -101,19 +102,19 @@ module NumberStation
 
 
     # make_one_time_pad
-    desc "make_one_time_pad [--path PATH --num-pads NUM --length LENGTH]", "Generate a one time pad of LENGTH containing NUM entries"
+    desc "make_one_time_pad [--path PATH --numpads NUM --length LENGTH]", "Generate a one time pad of LENGTH containing NUM entries"
     long_desc <<-MAKE_ONE_TIME_PAD_LONG_DESC
     Generate a one time pad of LENGTH containing NUM entries
-    Optional parameters:\n
+    Parameters:\n
       --path PATH\n
-      --num-pads NUM\n
+      --numpads NUM\n
       --length LENGTH
 
     If no parameters are passed it will generate 5 one time pads in the current 
     directory of size 250 characters.
     MAKE_ONE_TIME_PAD_LONG_DESC
     option :length, :type => :numeric
-    option :num_pads, :type => :numeric
+    option :numpads, :type => :numeric
     option :path, :type => :string
     def make_one_time_pad()
       NumberStation::ConfigReader.read_config()
@@ -123,10 +124,68 @@ module NumberStation
       num_pads = options[:num_pads]
       path = options[:path]
       NumberStation.log.debug "length: #{length}" if options[:length]
-      NumberStation.log.debug "num_pads: #{num_pads}" if options[:num_pads]
+      NumberStation.log.debug "numpads: #{numpads}" if options[:numpads]
       NumberStation.log.debug "path: #{path}" if options[:path]
 
       NumberStation.make_otp(path, length, num_pads)
+    end
+
+
+    # encrypt message with a pad
+    desc "encrypt_message [MESSAGE --numpad NUMPAD --padpath PADPATH]", "Encrypt a message using the key: NUMPAD in one time pad PADPATH"
+    long_desc <<-ENCRYPT_MESSAGE_LONG_DESC
+    Encrypt a message using key NUMPAD in one-time-pad PADPATH
+    Parameters:\n
+      MESSAGE
+      --numpad NUMPAD\n
+      --padpath PADPATH
+
+    ENCRYPT_MESSAGE_LONG_DESC
+    option :numpad, :type => :string
+    option :padpath, :type => :string
+    def encrypt_message(message)
+      NumberStation::ConfigReader.read_config()
+      NumberStation.log.debug "encrypt_message"
+
+      message_data = File.read(message)
+      numpad = options[:numpad]
+      padpath = options[:padpath]
+
+      NumberStation.log.debug "message: #{message}" if options[:message]
+      NumberStation.log.debug "numpad: #{numpad}" if options[:numpad]
+      NumberStation.log.debug "padpath: #{padpath}" if options[:padpath]
+
+      enc_m = NumberStation.encrypt_message(message_data, padpath, numpad)
+      NumberStation.log.debug "encrypted_message: #{enc_m}"
+    end
+
+
+    # decrypt message with a pad
+    desc "encrypt_message [MESSAGE --numpad NUMPAD --padpath PADPATH]", "Decrypt a message using the key: NUMPAD in one time pad PADPATH"
+    long_desc <<-DECRYPT_MESSAGE_LONG_DESC
+    Encrypt a message using key NUMPAD in one-time-pad PADPATH
+    Parameters:\n
+      MESSAGE
+      --numpad NUMPAD\n
+      --padpath PADPATH
+
+    DECRYPT_MESSAGE_LONG_DESC
+    option :numpad, :type => :string
+    option :padpath, :type => :string
+    def decrypt_message(message)
+      NumberStation::ConfigReader.read_config()
+      NumberStation.log.debug "decrypt_message"
+
+      message_data = File.read(message)
+      numpad = options[:numpad]
+      padpath = options[:padpath]
+
+      NumberStation.log.debug "message: #{message}" if options[:message]
+      NumberStation.log.debug "numpad: #{numpad}" if options[:numpad]
+      NumberStation.log.debug "padpath: #{padpath}" if options[:padpath]
+
+      decrypt_m = NumberStation.decrypt_message(message_data, padpath, numpad)
+      NumberStation.log.debug "decrypted_message: #{decrypt_m}"
     end
 
 
