@@ -121,13 +121,13 @@ module NumberStation
       NumberStation.log.debug "make_one_time_pad"
 
       length = options[:length]
-      num_pads = options[:num_pads]
+      numpads = options[:numpads]
       path = options[:path]
       NumberStation.log.debug "length: #{length}" if options[:length]
       NumberStation.log.debug "numpads: #{numpads}" if options[:numpads]
       NumberStation.log.debug "path: #{path}" if options[:path]
 
-      NumberStation.make_otp(path, length, num_pads)
+      NumberStation.make_otp(path, length, numpads)
     end
 
 
