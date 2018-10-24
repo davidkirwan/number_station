@@ -37,7 +37,20 @@ module NumberStation
     end
 
     #crypto_hex_str = SecureRandom.hex(message.size)
-    crypto_hex_str = pad_data["pads"][pad_num]
+    unless pad_data["pads"][pad_num]["consumed"]
+      crypto_hex_str = pad_data["pads"][pad_num]["key"]
+      NumberStation.log.debug "Marking key as consumed"
+      pad_data["pads"][pad_num]["epoch_date"] = Time.now.to_i
+      pad_data["pads"][pad_num]["consumed"] = true
+      f = File.open(pad_path, "w")
+      f.write(pad_data.to_json)
+      f.close
+    else
+       msg = "Warning pad #{pad_num} has been consumed on #{Time.at(pad_data["pads"][pad_num]["epoch_date"])}"
+       NumberStation.log.error msg
+       exit
+    end
+
 
     NumberStation.log.debug "message length less than pad length: #{message.size <= crypto_hex_str.size}"
 
@@ -53,9 +66,9 @@ module NumberStation
      
     #encrypted_byte_str = encrypted_byte_array.each.map {|i| i.to_s(16)}.join
     encrypted_byte_str = encrypted_byte_array.map { |n| '%02X' % (n & 0xFF) }.join.downcase
-    puts encrypted_byte_str
-    puts encrypted_byte_array.size
-    puts encrypted_byte_str.size
+    #puts encrypted_byte_str
+    #puts encrypted_byte_array.size
+    #puts encrypted_byte_str.size
 
     #encrypted_byte_array_two = encrypted_byte_str.scan(/.{1}/).each_slice(2).map { |f, l| (Integer(f,16) << 4) + Integer(l,16) }
 

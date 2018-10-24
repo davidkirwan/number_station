@@ -36,7 +36,7 @@ module NumberStation
     end
 
     #crypto_hex_str = SecureRandom.hex(message.size)
-    crypto_hex_str = pad_data["pads"][pad_num]
+    crypto_hex_str = pad_data["pads"][pad_num]["key"]
 
     NumberStation.log.debug "message length less than pad length: #{message.size <= crypto_hex_str.size}"
 

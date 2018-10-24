@@ -20,6 +20,7 @@
 =end
 require "securerandom"
 require "json"
+require "time"
 
 module NumberStation
   def self.make_otp(pad_path, length, num_pads)
@@ -33,7 +34,13 @@ module NumberStation
     file_name = File.join(path, "one_time_pad_#{id}.json")
     NumberStation.log.debug "file_name: #{file_name}"
 
-    0.upto(num.to_i - 1) {|i| pads[i] = SecureRandom.hex(len.to_i)}
+    0.upto(num.to_i - 1) do |i| 
+      pads[i] = {
+        "key"=>SecureRandom.hex(len.to_i),
+        "epoch_date"=>nil,
+        "consumed"=>false
+      }
+    end
     one_time_pads = {
       :id=> id,
       :pads=> pads
