@@ -24,7 +24,6 @@ require "json"
 module NumberStation
   
   def self.decrypt_message(message, pad_path, pad_num)
-    message = message || "This is a secret message"
     NumberStation.log.debug "message length: #{message.size}"
     message_byte_array = message.scan(/.{1}/).each_slice(2).map { |f, l| (Integer(f,16) << 4) + Integer(l,16) } 
     #message.unpack('U*')

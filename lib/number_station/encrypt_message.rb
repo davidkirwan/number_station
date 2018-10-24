@@ -49,9 +49,14 @@ module NumberStation
     message_byte_array.each_with_index do |i, index|
       encrypted_byte_array << (i ^ crypto_byte_array[index])
     end
-    #puts encrypted_byte_array.inspect
+    puts encrypted_byte_array.inspect
+     
+    #encrypted_byte_str = encrypted_byte_array.each.map {|i| i.to_s(16)}.join
+    encrypted_byte_str = encrypted_byte_array.map { |n| '%02X' % (n & 0xFF) }.join.downcase
+    puts encrypted_byte_str
+    puts encrypted_byte_array.size
+    puts encrypted_byte_str.size
 
-    encrypted_byte_str = encrypted_byte_array.each.map {|i| i.to_s(16)}.join
     #encrypted_byte_array_two = encrypted_byte_str.scan(/.{1}/).each_slice(2).map { |f, l| (Integer(f,16) << 4) + Integer(l,16) }
 
     #decrypted_byte_array = []

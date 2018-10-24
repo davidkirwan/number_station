@@ -180,7 +180,7 @@ module NumberStation
       numpad = options[:numpad]
       padpath = options[:padpath]
 
-      NumberStation.log.debug "message: #{message}" if options[:message]
+      NumberStation.log.debug "message: #{message}"
       NumberStation.log.debug "numpad: #{numpad}" if options[:numpad]
       NumberStation.log.debug "padpath: #{padpath}" if options[:padpath]
 
