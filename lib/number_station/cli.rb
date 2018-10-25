@@ -121,13 +121,13 @@ module NumberStation
       NumberStation.log.debug "make_one_time_pad"
 
       length = options[:length]
-      num_pads = options[:num_pads]
+      numpads = options[:numpads]
       path = options[:path]
       NumberStation.log.debug "length: #{length}" if options[:length]
       NumberStation.log.debug "numpads: #{numpads}" if options[:numpads]
       NumberStation.log.debug "path: #{path}" if options[:path]
 
-      NumberStation.make_otp(path, length, num_pads)
+      NumberStation.make_otp(path, length, numpads)
     end
 
 
@@ -161,7 +161,7 @@ module NumberStation
 
 
     # decrypt message with a pad
-    desc "encrypt_message [MESSAGE --numpad NUMPAD --padpath PADPATH]", "Decrypt a message using the key: NUMPAD in one time pad PADPATH"
+    desc "decrypt_message [MESSAGE --numpad NUMPAD --padpath PADPATH]", "Decrypt a message using the key: NUMPAD in one time pad PADPATH"
     long_desc <<-DECRYPT_MESSAGE_LONG_DESC
     Encrypt a message using key NUMPAD in one-time-pad PADPATH
     Parameters:\n
@@ -180,7 +180,7 @@ module NumberStation
       numpad = options[:numpad]
       padpath = options[:padpath]
 
-      NumberStation.log.debug "message: #{message}" if options[:message]
+      NumberStation.log.debug "message: #{message}"
       NumberStation.log.debug "numpad: #{numpad}" if options[:numpad]
       NumberStation.log.debug "padpath: #{padpath}" if options[:padpath]
 

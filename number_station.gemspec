@@ -26,7 +26,7 @@ require "number_station/version"
 Gem::Specification.new do |spec|
   spec.name          = "number_station"
   spec.version       = NumberStation::VERSION
-  spec.date          = "2018-10-12"
+  spec.date          = "2018-10-23"
   spec.authors       = ["David Kirwan"]
   spec.email         = ["davidkirwanirl@gmail.com"]
   spec.license       = "GPL 3.0"
