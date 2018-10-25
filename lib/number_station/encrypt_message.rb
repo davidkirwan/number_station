@@ -24,11 +24,8 @@ require "json"
 module NumberStation
   
   def self.encrypt_message(message, pad_path, pad_num)
-    puts message
-    message = message || "This is a secret message"
     NumberStation.log.debug "message length: #{message.size}"
     message_byte_array = message.unpack('U*')
-    #NumberStation.log.debug "#{message_byte_array.inspect}"
 
     begin
       pad_data = JSON.parse(File.read(pad_path))
@@ -36,7 +33,6 @@ module NumberStation
       raise e
     end
 
-    #crypto_hex_str = SecureRandom.hex(message.size)
     unless pad_data["pads"][pad_num]["consumed"]
       crypto_hex_str = pad_data["pads"][pad_num]["key"]
       NumberStation.log.debug "Marking key as consumed"
@@ -51,37 +47,25 @@ module NumberStation
        exit
     end
 
-
     NumberStation.log.debug "message length less than pad length: #{message.size <= crypto_hex_str.size}"
-
-    #puts crypto_hex_str
     crypto_byte_array = crypto_hex_str.scan(/.{1}/).each_slice(2).map { |f, l| (Integer(f,16) << 4) + Integer(l,16) }
-    #puts crypto_byte_array.inspect
 
     encrypted_byte_array = []
     message_byte_array.each_with_index do |i, index|
       encrypted_byte_array << (i ^ crypto_byte_array[index])
     end
-    puts encrypted_byte_array.inspect
-     
-    #encrypted_byte_str = encrypted_byte_array.each.map {|i| i.to_s(16)}.join
+         
     encrypted_byte_str = encrypted_byte_array.map { |n| '%02X' % (n & 0xFF) }.join.downcase
-    #puts encrypted_byte_str
-    #puts encrypted_byte_array.size
-    #puts encrypted_byte_str.size
 
-    #encrypted_byte_array_two = encrypted_byte_str.scan(/.{1}/).each_slice(2).map { |f, l| (Integer(f,16) << 4) + Integer(l,16) }
-
-    #decrypted_byte_array = []
-    #encrypted_byte_array_two.each_with_index do |i, index|
-    #  decrypted_byte_array << (i ^ crypto_byte_array[index])
-    #end
-    #puts decrypted_byte_array.inspect
-
-    #decrypted_string = decrypted_byte_array.pack('U*').force_encoding('utf-8')
-    #puts decrypted_string
-
-    #puts message == decrypted_string
+    begin
+      f_name = "#{pad_data["id"]}_#{pad_num}_#{Time.now.to_i}.txt"
+      NumberStation.log.debug "Writing encrypted message to file #{f_name}"
+      f = File.open(f_name, "w")
+      f.write(encrypted_byte_str)
+      f.close
+    rescue Exception => e
+      raise e
+    end
 
     return encrypted_byte_str
   end
