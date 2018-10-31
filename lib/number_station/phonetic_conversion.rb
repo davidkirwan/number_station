@@ -117,16 +117,13 @@ module NumberStation
     message = ''
 
     f = File.open(file_name)
-    raw_message = f.readlines()
+    raw_message = f.read()
     f.close()
 
-    raw_message.each do |i|
-      # puts i
-      i.gsub!(/\n/, "").strip.each_char do |c|
-        message += NumberStation.lookup_phonetic(c)
-      end
+    raw_message.each_char do |c|
+      message += NumberStation.lookup_phonetic(c)
     end
-    return message + "\n"
+    return message
   end
 
 

@@ -44,6 +44,16 @@ module NumberStation
     end
 
     decrypted_string = decrypted_byte_array.pack('U*').force_encoding('utf-8')
+
+    begin
+      f_name = "#{pad_data["id"]}_#{pad_num}_#{Time.now.to_i}_decrypted.txt"
+      NumberStation.log.info "Writing decrypted message to file #{f_name}"
+      f = File.open(f_name, "w")
+      f.write(decrypted_string)
+      f.close
+    rescue Exception => e
+      raise e
+    end
     return decrypted_string
   end
 

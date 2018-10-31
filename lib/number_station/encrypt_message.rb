@@ -59,7 +59,7 @@ module NumberStation
 
     begin
       f_name = "#{pad_data["id"]}_#{pad_num}_#{Time.now.to_i}.txt"
-      NumberStation.log.debug "Writing encrypted message to file #{f_name}"
+      NumberStation.log.info "Writing encrypted message to file #{f_name}"
       f = File.open(f_name, "w")
       f.write(encrypted_byte_str)
       f.close
