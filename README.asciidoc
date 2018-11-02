@@ -8,6 +8,6 @@ Contributions are welcome, please fork the repo, create a branch, add your code,
 against master on this repo. For more information see _CONTRIBUTING.asciidoc_
 
 === Licence ===
-number_station is distributed under the GPL 3.0 licence. For more information see the _COPYING_
+number_station is distributed under the GPL 3.0 licence. For more information see the _COPYING.asciidoc_
 file.
 
