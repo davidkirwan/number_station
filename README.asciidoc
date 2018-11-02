@@ -5,7 +5,7 @@ image:https://badge.fury.io/rb/number_station.svg["Gem Version", link="https://b
 
 === Contributing ===
 Contributions are welcome, please fork the repo, create a branch, add your code, and make a PR
-against master on this repo.
+against master on this repo. For more information see CONTRIBUTING.asciidoc
 
 === Licence ===
 number_station is distributed under the GPL 3.0 licence. For more information see the _COPYING_
