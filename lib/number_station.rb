@@ -32,19 +32,6 @@ require 'number_station/version'
 
 module NumberStation
 
-  def self.hexlify(s)
-    a = []
-    s.each_byte do |b|
-      a << sprintf('%02X', b)
-    end
-    a.join
-  end
- 
-  def self.unhexlify(s)
-    a = s.split
-    return a.pack('H*')
-  end
-
   def self.command?(name)
     `which #{name}`
     $?.success?
