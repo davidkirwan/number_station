@@ -11,3 +11,8 @@ against master on this repo. For more information see _CONTRIBUTING.asciidoc_
 number_station is distributed under the GPL 3.0 licence. For more information see the _COPYING.asciidoc_
 file.
 
+=== Number Station Resources ===
+
+- https://linuxcoffee.com/numbers/
+- http://users.telenet.be/d.rijmenants/en/onetimepad.htm
+- https://www.numbers-stations.com/
