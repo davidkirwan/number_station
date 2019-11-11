@@ -34,6 +34,10 @@ module NumberStation
     end
 
     crypto_hex_str = pad_data["pads"][pad_num]["key"]
+    if message.size > crypto_hex_str.size
+      NumberStation.log.error "Error: The message length is greater than pad length. Unable to continue decryption."
+      exit
+    end
     NumberStation.log.debug "message length less than pad length: #{message.size <= crypto_hex_str.size}"
 
     crypto_byte_array = crypto_hex_str.scan(/.{1}/).each_slice(2).map { |f, l| (Integer(f,16) << 4) + Integer(l,16) }

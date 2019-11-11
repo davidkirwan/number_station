@@ -189,5 +189,14 @@ module NumberStation
     end
 
 
+    # version
+    desc "version", "Print the version of the Number Stations gem."
+    long_desc <<-VERSION_LONG_DESC
+    Prints the version of the Number Stations gem.
+    VERSION_LONG_DESC
+    def version()
+      NumberStation::ConfigReader.read_config()
+      NumberStation.log.debug "Version: #{NumberStation::VERSION}"
+    end
   end
 end

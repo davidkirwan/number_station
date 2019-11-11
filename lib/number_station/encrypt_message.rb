@@ -33,8 +33,15 @@ module NumberStation
       raise e
     end
 
+    crypto_hex_str = pad_data["pads"][pad_num]["key"]
+
+    if message.size > crypto_hex_str.size
+      NumberStation.log.error "Exception: message length is larger than pad length. Break the message into smaller parts."
+      exit
+    end
+    NumberStation.log.debug "message length less than pad length"
+
     unless pad_data["pads"][pad_num]["consumed"]
-      crypto_hex_str = pad_data["pads"][pad_num]["key"]
       NumberStation.log.debug "Marking key as consumed"
       pad_data["pads"][pad_num]["epoch_date"] = Time.now.to_i
       pad_data["pads"][pad_num]["consumed"] = true
@@ -47,7 +54,6 @@ module NumberStation
        exit
     end
 
-    NumberStation.log.debug "message length less than pad length: #{message.size <= crypto_hex_str.size}"
     crypto_byte_array = crypto_hex_str.scan(/.{1}/).each_slice(2).map { |f, l| (Integer(f,16) << 4) + Integer(l,16) }
 
     encrypted_byte_array = []
