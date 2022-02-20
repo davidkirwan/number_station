@@ -24,76 +24,83 @@ require 'fileutils'
 
 module NumberStation
   class CLI < Thor
-    
+
 
     # create_config
     desc "create_config [--path PATH]", "copy the sample config to current directory."
     long_desc <<-CREATE_CONFIG_LONG_DESC
       `create_config` will copy the sample config from config/config.json to the current directory. If the
-      optional parameter `--path PATH` is passed then this file is copied to the location specified by the 
+      optional parameter `--path PATH` is passed then this file is copied to the location specified by the
       PATH parameter.
+      Sample Intro and Outro messages are also copied to this directory. If you wish to automatically append
+      these messages, change the conf.json boolean.
     CREATE_CONFIG_LONG_DESC
     option :path, :type => :string
     def create_config()
-      NumberStation::ConfigReader.read_config()
-      config_file_path = File.join(File.dirname(__FILE__), "../../config/conf.json")
+      config_file_path = File.join(File.dirname(__FILE__), "../../resources/conf.json")
+      intro_file_path = File.join(File.dirname(__FILE__), "../../resources/intro_message.txt")
+      outro_file_path = File.join(File.dirname(__FILE__), "../../resources/outro_message.txt")
 
-      if options[:path]
-        path = options[:path]
-        unless File.file?(File.join(path, "/conf.json"))
-          #write config to path
-          NumberStation.log.debug "Copying sample config to #{path}"
-          FileUtils.cp(config_file_path, path)
-        else
-          NumberStation.log.debug "File already exists at #{File.join(path, "/conf.json")}"
-        end
-      else
-        path = Dir.pwd
-        unless File.file?(File.join(path, "/conf.json"))
-          #write config to local directory the binary was called from
-          NumberStation.log.debug "Copying sample config to #{path}"
-          FileUtils.cp(config_file_path, path)
-        else
-          NumberStation.log.debug "File already exists at #{File.join(path, "/conf.json")}"
-        end
-      end
+      options[:path] ? path = options[:path] : path = File.join(Dir.home, "/number_station")
+
+      unless Dir.exist?(path) then FileUtils.mkdir(path) end
+      unless File.file?(File.join(path, "conf.json")) then FileUtils.cp(config_file_path, File.join(path, "conf.json")) end
+      unless File.file?(File.join(path, "intro_message.txt")) then FileUtils.cp(intro_file_path, File.join(path, "intro_message.txt")) end
+      unless File.file?(File.join(path, "outro_message.txt")) then FileUtils.cp(outro_file_path, File.join(path, "outro_message.txt")) end
+      NumberStation::ConfigReader.read_config()
+      NumberStation.log.debug "create_config completed"
     end
 
 
     # convert_to_phonetic
-    desc "convert_to_phonetic [MESSAGE]", "Convert a message to phonetic output."
+    desc "convert_to_phonetic [MESSAGE_PATH]", "Convert a message to phonetic output."
     long_desc <<-CONVERT_MESSAGE_LONG_DESC
       convert_message takes a parameter which should point to a text file containing a message.
+        MESSAGE_PATH\n
       Optional parameters:\n
-        MESSAGE\n
-        --intro [INTRO] should be a text file containing intro message.\n
-        --outro [OUTRO] should be a text file containing the outro message.\n
+        --intro [INTRO_PATH] should be a text file containing intro message. Overrides value in conf.json\n
+        --outro [OUTRO_PATH] should be a text file containing the outro message. Overrides value in conf.json\n
         --mp3 [MP3] output message as an mp3 file.
-     
+
       Final message will be created from intro + message + outro
     CONVERT_MESSAGE_LONG_DESC
     option :intro, :type => :string
     option :outro, :type => :string
     option :mp3, :type => :string
-    def convert_to_phonetic(message)
+    def convert_to_phonetic(message_path)
       NumberStation::ConfigReader.read_config()
 
-      intro_path = options[:intro]
-      message_path = message
-      outro_path = options[:outro]
-      mp3_path = options[:mp3]
-      NumberStation.log.debug "intro_path: #{intro_path}" if options[:intro]
-      NumberStation.log.debug "message_path: #{message_path}"
-      NumberStation.log.debug "outro_path: #{outro_path}" if options[:outro]
-      NumberStation.log.debug "mp3_path: #{mp3_path}" if options[:mp3]
+      if options[:intro]
+        intro_path = options[:intro]
+        intro = NumberStation.to_phonetic(intro_path)
+      elsif NumberStation.data["resources"]["intro"]["enabled"]
+        intro_path = NumberStation.data["resources"]["intro"]["template"]
+        intro = NumberStation.to_phonetic(intro_path)
+      else
+        intro_path = ""
+      end
 
-      output = ""
-      output += NumberStation.to_phonetic(intro_path) if options[:intro]
-      output += NumberStation.to_phonetic(message_path)
-      output += NumberStation.to_phonetic(outro_path) if options[:outro]
+      if options[:outro]
+        outro_path = options[:outro]
+        outro = NumberStation.to_phonetic(outro_path)
+      elsif NumberStation.data["resources"]["outro"]["enabled"]
+        outro_path = NumberStation.data["resources"]["outro"]["template"]
+        outro = NumberStation.to_phonetic(outro_path)
+      else
+        outro_path = ""
+        outro = ""
+      end
+      NumberStation.log.debug "intro enabled: #{NumberStation.data["resources"]["intro"]["enabled"]} path: #{intro_path}"
+      NumberStation.log.debug "message_path: #{message_path}"
+      NumberStation.log.debug "outro enabled: #{NumberStation.data["resources"]["outro"]["enabled"]} path: #{outro_path}"
+
+      message = NumberStation.to_phonetic(message_path)
+      output = intro + message + outro
       NumberStation.log.info "output: #{output}"
 
       if options[:mp3]
+        mp3_path = options[:mp3]
+        NumberStation.log.debug "mp3_path: #{mp3_path}" if options[:mp3]
         NumberStation.log.debug "Generating mp3 output: #{mp3_path}"
         NumberStation.write_mp3(output, mp3_path)
       end
@@ -110,7 +117,7 @@ module NumberStation
       --numpads NUM\n
       --length LENGTH
 
-    If no parameters are passed it will generate 5 one time pads in the current 
+    If no parameters are passed it will generate 5 one time pads in the current
     directory of size 250 characters.
     MAKE_ONE_TIME_PAD_LONG_DESC
     option :length, :type => :numeric
@@ -197,6 +204,10 @@ module NumberStation
     def version()
       NumberStation::ConfigReader.read_config()
       NumberStation.log.debug "Version: #{NumberStation::VERSION}"
+    end
+
+    def self.exit_on_failure?()
+      false
     end
   end
 end

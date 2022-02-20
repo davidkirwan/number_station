@@ -24,7 +24,7 @@ module NumberStation
 
     def self.read_config()
       begin
-        config_file_path = File.join(Dir.pwd, "conf.json")
+        config_file_path = File.join(Dir.home, "number_station/conf.json")
         NumberStation.set_data( JSON.parse(File.read(config_file_path)) )
         NumberStation.set_log( Logger.new(STDOUT) )
         NumberStation.log.level = NumberStation.data["logging"]["level"]

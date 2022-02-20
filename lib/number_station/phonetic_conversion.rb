@@ -95,7 +95,11 @@ module NumberStation
 
 
   def self.call_espeak(input_file_path, output_file_path)
-    cmd = "espeak -ven+f3 -m -p 60 -s 180 -f #{input_file_path} --stdout | ffmpeg -i - -ar 44100 -ac 2 -ab 192k -f mp3 #{output_file_path}"
+    if NumberStation.data["resources"]["espeak"]["glados"]
+      cmd = "espeak -ven+f3 -m -p 60 -s 180 -f #{input_file_path} --stdout | ffmpeg -i - -ar 44100 -ac 2 -ab 192k -f mp3 #{output_file_path}"
+    else
+      cmd = "espeak -m -p 60 -s 180 -f #{input_file_path} --stdout | ffmpeg -i - -ar 44100 -ac 2 -ab 192k -f mp3 #{output_file_path}"
+    end
 
     unless NumberStation.command?('espeak') || NumberStation.command?('ffmpeg')
       NumberStation.log.error "number_station requires the espeak and ffmpeg utilities are installed in order to output an mp3 file."
@@ -106,8 +110,12 @@ module NumberStation
 
 
   def self.write_mp3(message, output_file_path)
-    filename = NumberStation.data["resources"]["espeak_sentence_template"]
-    sentence = NumberStation.generate_sentence(message)
+    filename = NumberStation.data["resources"]["espeak"]["sentence_template"]
+    if NumberStation.data["resources"]["espeak"]["glados"]
+      sentence = NumberStation.generate_sentence(message)
+    else
+      sentence = message
+    end
     NumberStation.write_espeak_template_file(filename, sentence)
     NumberStation.call_espeak(filename, output_file_path)
   end
@@ -115,7 +123,7 @@ module NumberStation
 
   def self.to_phonetic(file_name)
     message = ''
-
+    puts file_name
     f = File.open(file_name)
     raw_message = f.read()
     f.close()

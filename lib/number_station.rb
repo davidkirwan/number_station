@@ -35,7 +35,7 @@ module NumberStation
   def self.command?(name)
     `which #{name}`
     $?.success?
-  end  
+  end
 
   def self.set_log(log)
     @log = log
