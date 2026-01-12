@@ -18,7 +18,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 =end
-require 'pastel'
 require 'json'
 require 'logger'
 require 'number_station/cli'
@@ -27,11 +26,12 @@ require 'number_station/encrypt_message'
 require 'number_station/decrypt_message'
 require 'number_station/make_onetime_pad'
 require 'number_station/phonetic_conversion'
+require 'number_station/examine_pads'
+require 'number_station/GLaDOS_espeak'
 require 'number_station/version'
 
 
 module NumberStation
-
   def self.command?(name)
     `which #{name}`
     $?.success?
@@ -41,16 +41,46 @@ module NumberStation
     @log = log
   end
 
-  def self.log()
-    return @log
+  def self.log
+    @log
   end
 
   def self.set_data(data)
     @data = data
   end
 
-  def self.data()
-    return @data
+  def self.data
+    @data
   end
 
+  def self.agent_list
+    return [] unless @data && @data["agent_list"]
+    
+    # Handle backward compatibility: if agent_list contains strings, convert them
+    agents = @data["agent_list"]
+    if agents.is_a?(Array) && agents.first.is_a?(String)
+      # Old format: array of strings, convert to hashes
+      agents.map do |name|
+        {
+          "name" => name,
+          "location" => nil,
+          "handler_codeword" => nil,
+          "start_date" => nil,
+          "end_date" => nil,
+          "active" => false
+        }
+      end
+    else
+      # New format: array of hashes
+      agents
+    end
+  end
+
+  def self.find_agent_by_name(name)
+    agent_list.find { |agent| agent["name"] == name }
+  end
+
+  def self.active_agents
+    agent_list.select { |agent| agent["active"] == true }
+  end
 end

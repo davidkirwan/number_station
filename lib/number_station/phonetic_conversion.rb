@@ -21,7 +21,7 @@
 
 module NumberStation
 
-  ALPHABET ={
+  ALPHABET = {
     '0' => "zero",
     '1' => "one",
     '2' => "two",
@@ -58,80 +58,69 @@ module NumberStation
     'x' => "xray",
     'y' => "yankee",
     'z' => "zulu"
-  }
+  }.freeze
 
-
-  def self.lookup_phonetic(c)
-    begin
-      return NumberStation::ALPHABET[c] + ' ' || ' '
-    rescue Exception => e
-      return ' '
-    end
+  def self.lookup_phonetic(char)
+    phonetic = ALPHABET[char.downcase]
+    phonetic ? phonetic : nil
   end
 
 
   def self.espeak_word_template(word)
-    return "<prosody pitch=\"#{randomsign() + rand(0..200).to_s}\">#{word}</prosody>"
+    pitch = "#{random_sign}#{rand(0..200)}"
+    "<prosody pitch=\"#{pitch}\">#{word}</prosody>"
   end
 
-
-  def self.randomsign()
-    return rand(0..1) == 0 ? "-" : "+"
+  def self.random_sign
+    rand(0..1) == 0 ? "-" : "+"
   end
-
 
   def self.generate_sentence(message)
-    sentence = ""
-    message.split(" ").each {|i| sentence += espeak_word_template(i)}
-    return "<speak version=\"1.0\" xmlns=\"\" xmlns:xsi=\"\" xsi:schemaLocation=\"\" xml:lang=\"\"><voice gender=\"female\">#{sentence}</voice></speak>"
+    words = message.split(" ")
+    prosody_words = words.map { |word| espeak_word_template(word) }.join
+    "<speak version=\"1.0\" xmlns=\"\" xmlns:xsi=\"\" xsi:schemaLocation=\"\" xml:lang=\"\"><voice gender=\"female\">#{prosody_words}</voice></speak>"
   end
 
-
   def self.write_espeak_template_file(filename, sentence)
-    f = File.open(filename, "w")
-    f.write(sentence)
-    f.close
+    File.write(filename, sentence)
   end
 
 
   def self.call_espeak(input_file_path, output_file_path)
-    if NumberStation.data["resources"]["espeak"]["glados"]
-      cmd = "espeak -ven+f3 -m -p 60 -s 180 -f #{input_file_path} --stdout | ffmpeg -i - -ar 44100 -ac 2 -ab 192k -f mp3 #{output_file_path}"
-    else
-      cmd = "espeak -m -p 60 -s 180 -f #{input_file_path} --stdout | ffmpeg -i - -ar 44100 -ac 2 -ab 192k -f mp3 #{output_file_path}"
-    end
-
-    unless NumberStation.command?('espeak') || NumberStation.command?('ffmpeg')
+    unless NumberStation.command?('espeak') && NumberStation.command?('ffmpeg')
       NumberStation.log.error "number_station requires the espeak and ffmpeg utilities are installed in order to output an mp3 file."
-    else
-      `#{cmd}`
+      return
     end
-  end
 
+    # Use GLaDOS voice settings by default
+    voice_flag = "-ven+f3"
+    cmd = "espeak #{voice_flag} -m -p 60 -s 180 -f #{input_file_path} --stdout | ffmpeg -i - -ar 44100 -ac 2 -ab 192k -f mp3 #{output_file_path}"
+    `#{cmd}`
+  end
 
   def self.write_mp3(message, output_file_path)
-    filename = NumberStation.data["resources"]["espeak"]["sentence_template"]
-    if NumberStation.data["resources"]["espeak"]["glados"]
-      sentence = NumberStation.generate_sentence(message)
-    else
-      sentence = message
-    end
-    NumberStation.write_espeak_template_file(filename, sentence)
-    NumberStation.call_espeak(filename, output_file_path)
+    # Use temporary file for espeak template
+    template_file = "/tmp/espeak_tmp.xml"
+    # Generate GLaDOS-style sentence
+    sentence = generate_sentence(message)
+    
+    write_espeak_template_file(template_file, sentence)
+    call_espeak(template_file, output_file_path)
   end
 
-
   def self.to_phonetic(file_name)
-    message = ''
-    puts file_name
-    f = File.open(file_name)
-    raw_message = f.read()
-    f.close()
-
-    raw_message.each_char do |c|
-      message += NumberStation.lookup_phonetic(c)
+    raw_message = File.read(file_name)
+    # Remove all whitespace from input
+    cleaned_message = raw_message.gsub(/[\s\n\r]/, '')
+    
+    # Process in groups of 5 characters
+    groups = cleaned_message.chars.each_slice(5).map do |group|
+      # Convert each character in the group to phonetic
+      group.map { |char| lookup_phonetic(char) }.compact.join(' ')
     end
-    return message
+    
+    # Join groups with double space for readability
+    groups.join('  ')
   end
 
 

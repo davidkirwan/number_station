@@ -21,37 +21,72 @@
 require "securerandom"
 require "json"
 require "time"
+require "date"
 
 module NumberStation
-  def self.make_otp(pad_path, length, num_pads)
+  def self.make_otp(pad_path, length, num_pads, agent_name = nil)
     path = pad_path || Dir.pwd
-    len = length || 250
-    num = num_pads || 5
+    len = length || 500
+    num = num_pads || 500
 
-    NumberStation.log.debug "make_otp"
-    pads = {}
-    id = rand(0..99999).to_s.rjust(5, "0")
-    file_name = File.join(path, "one_time_pad_#{id}.json")
-    NumberStation.log.debug "file_name: #{file_name}"
+    # Round length up to nearest multiple of 5
+    len = round_up_to_multiple_of_5(len.to_i)
 
-    0.upto(num.to_i - 1) do |i| 
-      pads[i] = {
-        "key"=>SecureRandom.hex(len.to_i),
-        "epoch_date"=>nil,
-        "consumed"=>false
-      }
+    # Generate date-based filename with uniqueness component
+    date_str = Date.today.strftime("%Y-%m-%d")
+    filename_base = if agent_name && !agent_name.empty?
+                      "#{agent_name}-#{date_str}"
+                    else
+                      "one_time_pad-#{date_str}"
+                    end
+    
+    # Ensure uniqueness: if file exists, add a counter
+    filename = File.join(path, "#{filename_base}.json")
+    counter = 1
+    while File.exist?(filename)
+      filename = File.join(path, "#{filename_base}-#{counter.to_s.rjust(3, '0')}.json")
+      counter += 1
+      # Safety check to prevent infinite loop
+      raise StandardError, "Too many pad files with same date prefix: #{filename_base}" if counter > 999
     end
-    one_time_pads = {
-      :id=> id,
-      :pads=> pads
+    
+    # Generate a unique pad_id for internal use (using epoch timestamp + random)
+    pad_id = generate_pad_id
+
+    pads = generate_pads(num.to_i, len)
+    pad_data = {
+      id: pad_id,
+      pads: pads
     }
 
-    unless File.file?(file_name)
-      f = File.open(file_name, "w")
-      f.write(one_time_pads.to_json)
-      f.close
-    else
-      raise Exception.new("Exception #{file_name} already exists")
+    File.write(filename, pad_data.to_json)
+    NumberStation.log.debug "Created one-time pad: #{filename}"
+    filename
+  end
+
+  private
+
+  def self.round_up_to_multiple_of_5(number)
+    # Round up to nearest multiple of 5
+    # Examples: 3 -> 5, 7 -> 10, 12 -> 15, 15 -> 15, 500 -> 500
+    ((number + 4) / 5) * 5
+  end
+
+  def self.generate_pad_id
+    # Generate a unique ID using epoch timestamp and random component
+    # This ensures uniqueness even if multiple pads are created in the same second
+    "#{Time.now.to_i}-#{rand(1000..9999)}"
+  end
+
+  def self.generate_pads(num_pads, length)
+    pads = {}
+    0.upto(num_pads - 1) do |i|
+      pads[i] = {
+        "key" => SecureRandom.hex(length),
+        "epoch_date" => nil,
+        "consumed" => false
+      }
     end
+    pads
   end
 end

@@ -1,0 +1,415 @@
+logging:
+  level: 0
+
+server:
+  host: "0.0.0.0"
+  port: 8080
+
+resources:
+  intro:
+    template: "intro_message.txt"
+    enabled: true
+  outro:
+    template: "outro_message.txt"
+    enabled: true
+  repeat:
+    template: "repeat_message.txt"
+    enabled: true
+
+agent_list:
+  - name: Abyss
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Ash
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Blade
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Blitz
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Cipher
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Cobra
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Dagger
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Drift
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Dusk
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Eclipse
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Enigma
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Fang
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Flux
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Frost
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Frostbite
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Ghost
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Grim
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Grimlock
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Havoc
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Helix
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Hunter
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Iron
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Ironclad
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Jinx
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Kraken
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Nexus
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Nightfall
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Nightshade
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Nova
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Nyx
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Obsidian
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Onyx
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Phantom
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Pulse
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Raptor
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Raven
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Razor
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Reaper
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Revenant
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Riven
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Rogue
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Saber
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Scorch
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Scorpion
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Shade
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Shadow
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Shard
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Slate
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Specter
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Storm
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Striker
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Surge
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Talon
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Tempest
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Thorn
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Titan
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Vantage
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Venom
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Vex
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Viper
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Void
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Voidwalker
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Vortex
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Wraith
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Zephyr
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
+  - name: Zero
+    location: null
+    handler_codeword: null
+    start_date: null
+    end_date: null
+    active: false
