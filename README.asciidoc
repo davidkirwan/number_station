@@ -69,7 +69,7 @@ number_station pad create [--name AGENT] [--numpads NUM] [--length LENGTH]
 ----
 
 If `--name` is provided, creates pad in `~/number_station/pads/AGENT/` directory.
-Defaults: 500 pads, 500 characters (rounded up to nearest multiple of 5).
+Defaults: 500 pads, 500 characters. Pad length is automatically rounded up to the nearest multiple of 5.
 
 *View pad statistics:*
 
@@ -90,15 +90,30 @@ number_station convert_pad_to_asciidoc --padpath PAD_FILE
 Converts a pad file to AsciiDoc format with each pad as a chapter. Output saved as `FILENAME.asciidoc`.
 Pads are formatted in groups of 5 characters with page breaks after every 2nd pad.
 
-*Convert AsciiDoc to PDF:*
+*Convert pad to LaTeX:*
 
 [source,bash]
 ----
-number_station convert_to_pdf ASCIIDOC_FILE
+number_station convert_pad_to_latex --padpath PAD_FILE
 ----
 
-Converts an AsciiDoc file to PDF using asciidoctor-pdf. Output saved as `FILENAME.pdf`.
-Requires asciidoctor-pdf gem to be installed.
+Converts a pad file to LaTeX format with landscape orientation. Output saved as `FILENAME.tex`.
+Pads are formatted in groups of 5 characters, arranged in a 2x2 grid (4 pads per page), with each pad taking up one quadrant of the page.
+
+*Convert to PDF:*
+
+[source,bash]
+----
+number_station convert_to_pdf INPUT_FILE
+----
+
+Converts an AsciiDoc (`.asciidoc` or `.adoc`) or LaTeX (`.tex`) file to PDF.
++
+For AsciiDoc files: Uses asciidoctor-pdf. Requires asciidoctor-pdf gem to be installed.
++
+For LaTeX files: Uses pdflatex. Requires a LaTeX distribution (e.g., texlive) to be installed.
++
+Output saved as `FILENAME.pdf` in the same directory.
 
 ==== Message Encryption/Decryption ====
 
