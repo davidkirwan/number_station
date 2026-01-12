@@ -6,7 +6,10 @@ image:https://badge.fury.io/rb/number_station.svg["Gem Version", link="https://b
 
 === Installation ===
 
- gem install number_station
+[source,bash]
+----
+gem install number_station
+----
 
 === Usage ===
 
@@ -14,7 +17,10 @@ image:https://badge.fury.io/rb/number_station.svg["Gem Version", link="https://b
 
 Create the initial configuration:
 
- number_station create_config
+[source,bash]
+----
+number_station create_config
+----
 
 This creates `~/number_station/conf.yaml` and copies template files (`intro_message.txt`, `outro_message.txt`, `repeat_message.txt`) to the same directory.
 
@@ -22,77 +28,113 @@ This creates `~/number_station/conf.yaml` and copies template files (`intro_mess
 
 Manage agents using the `agents` subcommand:
 
-Create an agent::
+*Create an agent:*
 
- number_station agents create NAME [--location LOCATION] [--handler HANDLER]
+[source,bash]
+----
+number_station agents create NAME [--location LOCATION] [--handler HANDLER]
+----
 
-Activate/Deactivate::
+*Activate/Deactivate:*
 
- number_station agents activate NAME [--start-date DATE]
- number_station agents deactivate NAME [--end-date DATE]
+[source,bash]
+----
+number_station agents activate NAME [--start-date DATE]
+number_station agents deactivate NAME [--end-date DATE]
+----
 
-Update handler codeword::
+*Update handler codeword:*
 
- number_station agents update-handler NAME HANDLER
+[source,bash]
+----
+number_station agents update-handler NAME HANDLER
+----
 
-View agents::
+*View agents:*
 
- number_station agents list              # Active agents only
- number_station agents list-all          # All agents with history
- number_station agents stats             # Detailed statistics
+[source,bash]
+----
+number_station agents list              # Active agents only
+number_station agents list-all          # All agents with history
+number_station agents stats             # Detailed statistics
+----
 
 ==== One-Time Pads ====
 
-Create pads::
+*Create pads:*
 
- number_station pad create [--name AGENT] [--numpads NUM] [--length LENGTH]
+[source,bash]
+----
+number_station pad create [--name AGENT] [--numpads NUM] [--length LENGTH]
+----
 
 If `--name` is provided, creates pad in `~/number_station/pads/AGENT/` directory.
 Defaults: 500 pads, 500 characters (rounded up to nearest multiple of 5).
 
-View pad statistics::
+*View pad statistics:*
 
- number_station pad stats [--path PATH]
+[source,bash]
+----
+number_station pad stats [--path PATH]
+----
 
 Shows pad statistics grouped by agent, including unconsumed pad counts.
 
 ==== Message Encryption/Decryption ====
 
-Encrypt::
+*Encrypt:*
 
- number_station encrypt [MESSAGE] [--file FILE] [--agent AGENT] [--padpath PADPATH] [--numpad NUMPAD]
+[source,bash]
+----
+number_station encrypt [MESSAGE] [--file FILE] [--agent AGENT] [--padpath PADPATH] [--numpad NUMPAD]
+----
 
 If `--agent` is provided, searches for oldest pad in agent-specific directory.
 Only active agents can encrypt messages.
 
-Decrypt::
+*Decrypt:*
 
- number_station decrypt [MESSAGE] [--file FILE] [--padpath PADPATH] [--numpad NUMPAD]
+[source,bash]
+----
+number_station decrypt [MESSAGE] [--file FILE] [--padpath PADPATH] [--numpad NUMPAD]
+----
 
 ==== Phonetic Conversion ====
 
-Convert to phonetic::
+*Convert to phonetic:*
 
- number_station convert_to_phonetic FILE [--intro INTRO_FILE] [--outro OUTRO_FILE] [--repeat REPEAT_FILE]
+[source,bash]
+----
+number_station convert_to_phonetic FILE [--intro INTRO_FILE] [--outro OUTRO_FILE] [--repeat REPEAT_FILE]
+----
 
 Converts encrypted message to phonetic alphabet. Output saved as `FILENAME_phonetic.txt`.
 Intro, outro, and repeat messages are included as-is (not converted).
 
-Convert to espeak XML::
+*Convert to espeak XML:*
 
- number_station convert_to_espeak PHONETIC_FILE
+[source,bash]
+----
+number_station convert_to_espeak PHONETIC_FILE
+----
 
 Generates GLaDOS-style espeak XML file. Output saved as `FILENAME.xml`.
 
-Generate MP3::
+*Generate MP3:*
 
- number_station convert_to_mp3 XML_FILE
+[source,bash]
+----
+number_station convert_to_mp3 XML_FILE
+----
 
 Converts XML to MP3 using espeak and ffmpeg. Output saved as `FILENAME.mp3`.
 
-Play audio::
+*Play audio:*
 
- number_station espeak XML_FILE
+[source,bash]
+----
+number_station espeak XML_FILE
+----
 
 Plays the XML file using espeak with GLaDOS voice settings.
 
