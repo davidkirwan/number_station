@@ -80,6 +80,26 @@ number_station pad stats [--path PATH]
 
 Shows pad statistics grouped by agent, including unconsumed pad counts.
 
+*Convert pad to AsciiDoc:*
+
+[source,bash]
+----
+number_station convert_pad_to_asciidoc --padpath PAD_FILE
+----
+
+Converts a pad file to AsciiDoc format with each pad as a chapter. Output saved as `FILENAME.asciidoc`.
+Pads are formatted in groups of 5 characters with page breaks after every 2nd pad.
+
+*Convert AsciiDoc to PDF:*
+
+[source,bash]
+----
+number_station convert_to_pdf ASCIIDOC_FILE
+----
+
+Converts an AsciiDoc file to PDF using asciidoctor-pdf. Output saved as `FILENAME.pdf`.
+Requires asciidoctor-pdf gem to be installed.
+
 ==== Message Encryption/Decryption ====
 
 *Encrypt:*
